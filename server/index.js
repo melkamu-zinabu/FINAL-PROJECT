@@ -21,7 +21,7 @@ app.use(cors({
    origin: 'http://localhost:3000', // specify the URL of the client that can make requests
    methods: ['GET', 'POST','DELETE','PUT'], // specify the methods that are allowed
  }));
-CONNECTDB();
+// CONNECTDB();
 const port=3005;
 
 
@@ -32,9 +32,12 @@ app.use('/news',newsrouter)
 app.use('/market',marketrouter)
 app.use('/contact',contactrouter)
 
-app.listen(port,MEL);
-
-function MEL(){
-    
-        console.log(`bro running ${port}`);
-}
+CONNECTDB().then(() => {
+        app.listen(port, MEL);
+      }).catch((error) => {
+        console.error('Failed to connect to the database:', error);
+      });
+      
+      function MEL() {
+        console.log(`Server running on port ${port}`);
+      }
